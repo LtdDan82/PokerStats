@@ -10,6 +10,7 @@ import json
 import numpy as np
 import pandas as pd
 import os
+import openpyxl
 #%%
 def add_game_state(df, event_map):
 
@@ -60,7 +61,7 @@ def parse_events():
     
     events = "./data/events_map.xlsx"
     #events = 'https://github.com/LtdDan82/PokerStats/blob/master/data/events_map.xlsx'
-    event_df = pd.read_excel(events, index_col = 0, header = None, names = ['action'], engine = 'xlrd')
+    event_df = pd.read_excel(events, index_col = 0, header = None, names = ['action'], engine = 'openpyxl')
     return event_df
 #%%
 def parse_data():
