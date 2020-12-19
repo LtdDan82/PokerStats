@@ -58,7 +58,8 @@ def fill_list(listitem, maxlen):
 def parse_events():
     events = "E:\Python\PokerStats\data\events_map.xlsx"
     #events = 'https://github.com/LtdDan82/PokerStats/blob/master/data/events_map.xlsx'
-    return pd.read_excel(events, index_col = 0, header = None, names = ['action'])
+    event_df = pd.read_excel(events, index_col = 0, header = None, names = ['action'], engine = 'openpyxl')
+    return event_df
 #%%
 def parse_data():
     '''
@@ -107,7 +108,6 @@ def parse_data():
     
     return df_final, parsed_ids
 #%%
-df_final, parsed_ids = parse_data()
     
 
 
