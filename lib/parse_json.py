@@ -57,6 +57,7 @@ def fill_list(listitem, maxlen):
 #%%
 def parse_events():
     events = "E:\Python\PokerStats\data\events_map.xlsx"
+    #events = 'https://github.com/LtdDan82/PokerStats/blob/master/data/events_map.xlsx'
     return pd.read_excel(events, index_col = 0, header = None, names = ['action'])
 #%%
 def parse_data():
@@ -72,7 +73,9 @@ def parse_data():
 
     '''
     json_data = "E:\Python\PokerStats\data\history_12122020.txt"
+    #json_data = "https://github.com/LtdDan82/PokerStats/blob/master/data/history_12122020.txt"
     pub_ids = "E:\Python\PokerStats\data\public_id.txt"
+    #pub_ids = "https://github.com/LtdDan82/PokerStats/blob/master/data/public_id.txt"
     
     event_map = parse_events()
     with open(json_data, 'r') as f1, open(pub_ids, 'r') as f2:
