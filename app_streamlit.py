@@ -32,27 +32,35 @@ from lib.player_analysis import get_wins, get_raise_rate, plot_player_stats, sum
 
 
 #%%
-df_final = extract_transform()
+#@st.cache
+def etl_dataset():
+    df_final = extract_transform()
 #%% Generate Game Data
-game = get_played_games(df_final)
-pot = get_pot_stats(df_final)
+    game = get_played_games(df_final)
+    pot = get_pot_stats(df_final)
 
-game_stats = get_gameStats(game, pot)
-fig_games = plot_played_games(game)
+    game_stats = get_gameStats(game, pot)
+    fig_games = plot_played_games(game)
 
 
 #%% Generate Player Data
-df_player_stats = sum_player_stats(df_final)
+    df_player_stats = sum_player_stats(df_final)
 #plot the raiserate
-fig_player_stats = plot_player_stats(df_player_stats)
+    fig_player_stats = plot_player_stats(df_player_stats)
 # List of player for selection items
-players = df_player_stats.index.tolist()
+    players = df_player_stats.index.tolist()
+    
+    return game_stats, fig_games, fig_player_stats, players
+
+
+game_stats, fig_games, fig_player_stats, players = etl_dataset()
+
 
 #%% Headline
 
 st.write("""
          # Dashboard - Session_id #
-         """)
+         """) 
                   
 st.write("""
          ## Statistics - Game
@@ -62,6 +70,7 @@ game_col1, game_col2 = st.beta_columns([3,1])
 game_col1.table(game_stats.style.format("{:.1f}"))
 #col 2
 game_col2.pyplot(fig_games)
+
 
 # Generate Sidebar for player selection
 player = st.sidebar.selectbox('Select Player', options = players, index = 0)
