@@ -25,6 +25,20 @@ plt.rcParams['figure.titlesize'] = 14
 
 #%%
 def get_wins(df_final):
+    '''
+    Returns Number of wins per player.
+
+    Parameters
+    ----------
+    df_final : dataframe
+        DESCRIPTION.
+
+    Returns
+    -------
+    df_wins : dataframe
+        DESCRIPTION.
+
+    '''
     df_wins = df_final[df_final['action'] == 'WIN_POT'].groupby('player').count()['game_number']
     df_wins.name = 'won_pot'
    # wins = df_wins.loc[selection]
@@ -63,9 +77,8 @@ def get_phase_raises(df_final, phase):
     '''
     - Takes df_final and searches for raises in phase 
     - args for phase: 'preflop', 'flop', 'turn', 'river'
-    - For drawing games 'preflop' = 'pre swap', 'flop' = 'first swap', etc.
-    
-
+    - For drawing games 'preflop' = 'pre swap', 'flop' = 'first swap', 
+    is automatically mapped
 
     Parameters
     ----------
@@ -99,6 +112,22 @@ def get_phase_raises(df_final, phase):
     return raise_events
 #%%
 def sum_player_stats(df_final):
+    '''
+    Returns total_games, wins, total_raises, preflop_raises per player
+    Nested Functions:
+        get_wins, get_phase_raises
+
+    Parameters
+    ----------
+    df_final : dataframe
+        DESCRIPTION.
+
+    Returns
+    -------
+    df_player_stats : dataframe
+        DESCRIPTION.
+
+    '''
     #get wins    
     df_wins = get_wins(df_final)
     # get total_raises    
@@ -115,7 +144,8 @@ def sum_player_stats(df_final):
 #%%
 def plot_player_stats(df_player_stats):
     '''
-    
+    Plots total_games, wins, total_raises, preflop_raises per player as barplot
+    Return matplotlib.figure object
 
     Parameters
     ----------
@@ -169,9 +199,5 @@ def plot_player_stats(df_player_stats):
     return fig           
 
 
-def player_vs_opp(df_final, player, opp):
-    # dataframe machen mit player und gegner (als liste) und dann
-    
-    df = df_final[df_final['player'].isin([player] + opp)]
     
     

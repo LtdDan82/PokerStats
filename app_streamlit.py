@@ -27,71 +27,75 @@ from lib.data_transform import extract_transform
 # Game Stats
 from lib.data_analysis import get_gameStats, get_pot_stats, get_played_games, plot_played_games
 
-# Player Stats
+# Global Player Stats
 from lib.player_analysis import get_wins, get_raise_rate, plot_player_stats, sum_player_stats
+
+# Player Specific Stats
+from lib.player_spec_analysis import player_specific_stats
 
 
 #%%
-#@st.cache
 def etl_dataset():
+    
+    #load data
     df_final = extract_transform()
-#%% Generate Game Data
+    # get global game stats
     game = get_played_games(df_final)
     pot = get_pot_stats(df_final)
-
     game_stats = get_gameStats(game, pot)
+    #create pie chart     
     fig_games = plot_played_games(game)
-
-
-#%% Generate Player Data
+    
+    # get global player stats
     df_player_stats = sum_player_stats(df_final)
-#plot the raiserate
+    # get global player figure
     fig_player_stats = plot_player_stats(df_player_stats)
-# List of player for selection items
+    
+    # get player specific stats
+    
+    
+    
     players = df_player_stats.index.tolist()
     
-    return game_stats, fig_games, fig_player_stats, players
-
-
-game_stats, fig_games, fig_player_stats, players = etl_dataset()
+    return df_final, game_stats, fig_games, fig_player_stats, players
+#%%
+df_final, game_stats, fig_games, fig_player_stats, players = etl_dataset()
 
 
 #%% Headline
 
-st.write("""
-         # Dashboard - Session_id #
-         """) 
-                  
-st.write("""
-         ## Statistics - Game
-         """)
-#col1
-game_col1, game_col2 = st.beta_columns([3,1])    
-game_col1.table(game_stats.style.format("{:.1f}"))
-#col 2
-game_col2.pyplot(fig_games)
-
+st.write("""# Dashboard - Session_id #""") 
+                 
 
 # Generate Sidebar for player selection
 player = st.sidebar.selectbox('Select Player', options = players, index = 0)
-
 opponents = st.sidebar.multiselect('Select Opponent(s)',
                                    default = players,
                                    options = players)
 
-st.write("""
-## Statistics - Players
-""")
+playstats1 = player_specific_stats(df_final, player)
+
+st.write("""### Player Stats for player: """, player)
 
 play_col1, play_col2 = st.beta_columns(2)
 #col 1
-play_col1.pyplot(fig_player_stats)
+play_col1.table(playstats1)
+
 
 #df_wins, num_wins = get_wins(df_final, selection)
 
 #msg_wins = 'Player {} win {} times this session' .format(selection, num_wins)
 
 #col2
-play_col2.write('FU')
+play_col2.write('## Visualisierung')
+
+st.write("""### Global Game Stats""")
+#col1
+game_col1, game_col2 = st.beta_columns([3, 1])    
+game_col1.table(game_stats.style.format("{:.1f}"))
+game_col1.pyplot(fig_player_stats)#col 2
+game_col2.pyplot(fig_games)
+
+
 
 
