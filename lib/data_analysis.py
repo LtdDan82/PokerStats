@@ -29,6 +29,7 @@ plt.rcParams['figure.titlesize'] = 14
 #width, height = plt.figaspect(16/9)
 
 #%%
+
 def get_played_games(df_final):
     '''
     Returns percentual games per game

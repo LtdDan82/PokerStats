@@ -31,7 +31,7 @@ from lib.data_analysis import get_gameStats, get_pot_stats, get_played_games, pl
 from lib.player_analysis import get_wins, get_raise_rate, plot_player_stats, sum_player_stats
 
 # Player Specific Stats
-from lib.player_spec_analysis import player_specific_stats
+from lib.player_spec_analysis import PlayerStats
 
 
 #%%
@@ -53,15 +53,17 @@ def etl_dataset():
     fig_player_stats = plot_player_stats(df_player_stats)
     
     # get player specific stats
-    
-    
-    
     players = df_player_stats.index.tolist()
     
     return df_final, game_stats, fig_games, fig_player_stats, players
 #%%
-df_final, game_stats, fig_games, fig_player_stats, players = etl_dataset()
+def display_fig_in_app(fig_object):
+    return fig_object
 
+#%%
+df_final, game_stats, fig_games, fig_player_stats, players = etl_dataset()
+#%% Generate class object for PlayerStats
+playstats = PlayerStats(df_final)
 
 #%% Headline
 
@@ -74,13 +76,14 @@ opponents = st.sidebar.multiselect('Select Opponent(s)',
                                    default = players,
                                    options = players)
 
-playstats1 = player_specific_stats(df_final, player)
+
+specific_stats = playstats._player_specific_stats(player)
 
 st.write("""### Player Stats for player: """, player)
 
 play_col1, play_col2 = st.beta_columns(2)
 #col 1
-play_col1.table(playstats1)
+play_col1.table(specific_stats)
 
 
 #df_wins, num_wins = get_wins(df_final, selection)
@@ -94,8 +97,10 @@ st.write("""### Global Game Stats""")
 #col1
 game_col1, game_col2 = st.beta_columns([3, 1])    
 game_col1.table(game_stats.style.format("{:.1f}"))
-game_col1.pyplot(fig_player_stats)#col 2
-game_col2.pyplot(fig_games)
+
+
+game_col1.pyplot(display_fig_in_app(fig_player_stats))#col 2
+game_col2.pyplot(display_fig_in_app(fig_games))
 
 
 
