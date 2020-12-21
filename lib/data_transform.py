@@ -106,7 +106,7 @@ def get_gamephase(df_final):
 #%%
 def extract_transform():
     '''
-    -Takes nested functions "parse_events" and "parse_data" to load the game data
+    -Takes nested function "parse_data" to load the game data
     -extracts playerID and playerMoney from the data
     -removes unnecessary columns
 
@@ -116,6 +116,8 @@ def extract_transform():
         DESCRIPTION.
 
     '''
+   
+    
    # event_map = parse_events()
     df_final, parsed_ids = parse_data()
     df_final = get_playerID(df_final, parsed_ids)

@@ -58,8 +58,9 @@ def fill_list(listitem, maxlen):
     return listitem
 #%%
 def parse_events():
+    directory = os.getcwd()
     
-    events = "./data/events_map.xlsx"
+    events = os.path.join(directory, "data", "events_map.xlsx")
     #events = 'https://github.com/LtdDan82/PokerStats/blob/master/data/events_map.xlsx'
     event_df = pd.read_excel(events, index_col = 0, header = None, names = ['action'], engine = 'openpyxl')
     return event_df
@@ -76,9 +77,13 @@ def parse_data():
         DESCRIPTION.
 
     '''
-    json_data = "./data/history_12122020.txt"
+    directory = os.getcwd()
+    
+    
+    json_data = os.path.join(directory, "data", "history_12122020.txt")
     #json_data = "https://github.com/LtdDan82/PokerStats/blob/master/data/history_12122020.txt"
-    pub_ids = "./data/public_id.txt"
+    pub_ids = os.path.join(directory, "data", "public_id.txt")
+    #pub_ids = "./data/public_id.txt"
     #pub_ids = "https://github.com/LtdDan82/PokerStats/blob/master/data/public_id.txt"
     
     event_map = parse_events()
