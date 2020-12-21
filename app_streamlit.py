@@ -35,6 +35,7 @@ from lib.player_spec_analysis import player_specific_stats
 
 
 #%%
+@st.cache(allow_output_mutation=True)
 def etl_dataset():
     
     #load data
