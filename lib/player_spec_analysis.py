@@ -20,8 +20,6 @@ plt.rcParams['legend.fontsize'] = 12
 plt.rcParams['figure.titlesize'] = 14
 
 #%%
-df_final = extract_transform()
-#%%
 class PlayerStats(object):
     
     
@@ -261,9 +259,7 @@ class PlayerStats(object):
             DESCRIPTION.
     
         '''
-        self.player = player
-        
-        
+        self.player = player                
         player_df = self.df_final[self.df_final['player'] == self.player]
         # Get counts for column "action"
         act_count = player_df.groupby('action').count()['game_number']
