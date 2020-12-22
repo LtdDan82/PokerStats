@@ -79,7 +79,10 @@ class PlayerStats(object):
 
         '''
         
-        return self.df_final['player'].unique()
+        players = self.df_final['player'].dropna().unique()
+        players = players.tolist()
+        
+        return players
     
     def get_wins(self):
     
@@ -329,12 +332,12 @@ class PlayerStats(object):
     
         '''
         #get wins    
-        df_wins = self.get_wins(self.df_final)
+        df_wins = self.get_wins()
         # get total_raises    
-        sum_stats = [self.get_raise_rate(self.df_final)]
+        sum_stats = [self.get_raise_rate()]
         #get raises in phase = []
         for phase in ['preflop']:
-            sum_stats.append(self.get_phase_raises(self.df_final, phase))
+            sum_stats.append(self.get_phase_raises(phase))
         sum_stats.append(df_wins)
         
         df_player_stats = pd.concat(sum_stats, axis = 1)
