@@ -88,8 +88,8 @@ game_col1, game_col2 = st.beta_columns([3, 1]) # Generate 2 columns
 game_col1.table(general_gStats.style.format("{:.1f}"))
 
 
-game_col2.pyplot(fig_play_stats)
-game_col1.pyplot(fig_played_games)
+game_col1.pyplot(fig_play_stats)
+game_col2.pyplot(fig_played_games)
 
 
 
