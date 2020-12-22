@@ -23,14 +23,11 @@ plt.rcParams['ytick.labelsize'] = 10
 plt.rcParams['legend.fontsize'] = 12
 plt.rcParams['figure.titlesize'] = 14
 
-
-
 # Set an aspect ratio
 #width, height = plt.figaspect(16/9)
 
 class GameStats(object):
-    
-    
+        
     def __init__(self, df_final):
         
         '''
@@ -47,9 +44,6 @@ class GameStats(object):
 
         '''
         self.df_final = df_final
-
-
-#%%
 
     def get_played_games(self):
         '''
@@ -74,7 +68,6 @@ class GameStats(object):
         
         return played_games
 
-#%%
     def plot_played_games(self):
         
         played_games = self.get_played_games()
@@ -87,7 +80,7 @@ class GameStats(object):
         ax1.axis('equal')
         
         return fig1
-    #%%
+
     def get_pot_stats(self):
         '''
         Returns mean, median, min, max values for "WIN_POT" grouped by game
@@ -116,8 +109,6 @@ class GameStats(object):
         
         return game_potsizes
 
-
-    #%%
     def get_gameStats(self, *args):
         '''
         Takes N *args dataframes with gametype as index and  joins them on the index
@@ -139,16 +130,6 @@ class GameStats(object):
         
         
         return game_stats
-
-
-#%%    
-
-# df_final = extract_transform()
-
-# played_games = get_played_games(df_final)
-# game_potsizes = get_pot_stats(df_final)
-
-# game_stats = get_gameStats(played_games, game_potsizes)
 
 
 

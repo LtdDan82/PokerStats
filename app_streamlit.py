@@ -23,6 +23,7 @@ from lib.data_analysis import GameStats
 # Player Specific Stats
 from lib.player_spec_analysis import PlayerStats
 
+from lib.fig_table_styles import highlight_max, highlight_min
 
 
 #%%
@@ -51,42 +52,60 @@ def load_playstats():
     
     #add stuff to load here
     fig_play_stats = playstats.plot_player_stats()
+    cashgame_stats = playstats.get_cashgame_statistics()
     
-    return playstats,  fig_play_stats
-#%%
-# def display_fig_in_app(fig_object):
-#     return fig_object
+    return playstats, cashgame_stats, fig_play_stats
 
 #%% Load Stuff in Cache
 df_final = load_dataset()
 
 gamestats, general_gStats, fig_played_games = load_gamestats()
 
-playstats, fig_play_stats = load_playstats()
+playstats, cashgame_stats, fig_play_stats = load_playstats()
 
 #%% Headline
 st.write("""# Dashboard - Session_id #""") 
 
 # Generate Sidebar for player selection
 players = playstats.get_ListOfPlayers()    
-player = st.sidebar.selectbox('Select Player', options = players, index = 0)
+selected_player = st.sidebar.selectbox('Select Player(s)', options = players, index = 0)
 opponents = st.sidebar.multiselect('Select Opponent(s)',
                                     default = players,
                                     options = players)
 
+player_vs_opp = list(set([selected_player] + opponents))
 
-st.write("""### Player Stats for player: """, player) #Player Statistics
-play_col1, play_col2 = st.beta_columns(2) # Generate 2 equidistant columns
-specific_stats = playstats._player_specific_stats(player)
-play_col1.table(specific_stats)
-play_col2.write('## Visualisierung_Platzhalter')
+
+st.write("""### Player Stats for player: """, selected_player) #Player Statistics
+#play_col1, play_col2 = st.beta_columns(2) # Generate 2 equidistant columns
+#specific_stats = playstats._player_specific_stats(selected_player)
+#play_col1.dataframe(specific_stats)
+
+cashgame_stats = cashgame_stats.loc[player_vs_opp, :]
+cashstats_styled = (cashgame_stats.style
+              .apply(highlight_max)
+              .apply(highlight_min)
+              .format("{:.1f}"))
+
+
+st.dataframe(cashstats_styled)
+
+
 
 
 st.write("""### Global Game Stats""") # Game Statistics
-game_col1, game_col2 = st.beta_columns([3, 1]) # Generate 2 columns
+game_col1, game_col2 = st.beta_columns([2, 1]) # Generate 2 columns
 
-game_col1.table(general_gStats.style.format("{:.1f}"))
-
+#game_col1.table(general_gStats.style.format("{:.1f}"))
+# styled_df = (general_gStats.style
+#              .background_gradient(cmap="Greys", axis = 0)
+#              .format("{:.1f}"))
+gStats_styled = (general_gStats.style
+              .apply(highlight_max)
+              .apply(highlight_min)
+              .format("{:.0f}"))
+game_col1.dataframe(gStats_styled, width = 1000, height = 1000)
+                
 
 game_col1.pyplot(fig_play_stats)
 game_col2.pyplot(fig_played_games)
