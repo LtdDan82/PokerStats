@@ -65,8 +65,10 @@ def parse_events():
     event_df = pd.read_excel(events, index_col = 0, header = None, names = ['action'], engine = 'openpyxl')
     return event_df
 #%%
-def parse_data():
+def parse_data(datestring):
     '''
+    datestring in the form: "ddmmyyyy"
+    
     maxlen = 4 aktuell noch hard gecoded, --> aus Daten ziehen
 
     Returns
@@ -77,12 +79,19 @@ def parse_data():
         DESCRIPTION.
 
     '''
+    assert type(datestring) == str
+    
+    
     directory = os.getcwd()
     
+    session_dir = "session_" + datestring 
+    history_file = "history_" + datestring + ".txt"
+    publicId_file = "publicID_" + datestring + ".txt"
     
-    json_data = os.path.join(directory, "data", "history_12122020.txt")
+    
+    json_data = os.path.join(directory, "data", session_dir, history_file)
     #json_data = "https://github.com/LtdDan82/PokerStats/blob/master/data/history_12122020.txt"
-    pub_ids = os.path.join(directory, "data", "public_id.txt")
+    pub_ids = os.path.join(directory, "data", session_dir, publicId_file)
     #pub_ids = "./data/public_id.txt"
     #pub_ids = "https://github.com/LtdDan82/PokerStats/blob/master/data/public_id.txt"
     

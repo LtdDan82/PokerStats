@@ -28,47 +28,55 @@ from lib.fig_table_styles import highlight_max, highlight_min
 
 #%%
 @st.cache(allow_output_mutation=True)
-def load_dataset():
-    df_final = extract_transform()
+def load_dataset(datestring):
+    df_final = extract_transform(datestring)
     return df_final
 
 #%%
 @st.cache(allow_output_mutation=True)
-def load_gamestats():
+def load_gamestats(gamestats):
     #get the class instance
-    gamestats = GameStats(df_final)
+    #gamestats = GameStats(df_final)
     
     #add stuff to load here
     game = gamestats.get_played_games()
     pot = gamestats.get_pot_stats()
     general_gStats = gamestats.get_gameStats(game, pot)
     fig_played_games = gamestats.plot_played_games()
-    return gamestats, general_gStats, fig_played_games
+    return general_gStats, fig_played_games
 
 @st.cache(allow_output_mutation=True)
-def load_playstats():
+def load_playstats(playstats):
     #get the class instance
-    playstats = PlayerStats(df_final)
+    #playstats = PlayerStats(df_final)
     
     #add stuff to load here
     fig_play_stats = playstats.plot_player_stats()
     cashgame_stats = playstats.get_cashgame_statistics()
     
-    return playstats, cashgame_stats, fig_play_stats
+    return cashgame_stats, fig_play_stats
 
 #%% Load Stuff in Cache
-df_final = load_dataset()
+datestring = st.sidebar.selectbox('Select a session', options = ['12122020', '19122020'],
+                                  index = 0)
 
-gamestats, general_gStats, fig_played_games = load_gamestats()
 
-playstats, cashgame_stats, fig_play_stats = load_playstats()
+df_final = load_dataset(datestring)
+
+gamestats = GameStats(df_final)
+playstats = PlayerStats(df_final)
+
+general_gStats, fig_played_games = load_gamestats(gamestats)
+
+cashgame_stats, fig_play_stats = load_playstats(playstats)
 
 #%% Headline
 st.write("""# Dashboard - Session_id #""") 
 
 # Generate Sidebar for player selection
 players = playstats.get_ListOfPlayers()    
-selected_player = st.sidebar.selectbox('Select Player(s)', options = players, index = 0)
+selected_player = st.sidebar.selectbox('Select Player(s)', options = players,
+                                       index = 0)
 opponents = st.sidebar.multiselect('Select Opponent(s)',
                                     default = players,
                                     options = players)

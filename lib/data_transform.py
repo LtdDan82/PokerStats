@@ -104,7 +104,7 @@ def get_gamephase(df_final):
     return df_final
     
 #%%
-def extract_transform():
+def extract_transform(datestring):
     '''
     -Takes nested function "parse_data" to load the game data
     -extracts playerID and playerMoney from the data
@@ -119,7 +119,7 @@ def extract_transform():
    
     
    # event_map = parse_events()
-    df_final, parsed_ids = parse_data()
+    df_final, parsed_ids = parse_data(datestring)
     df_final = get_playerID(df_final, parsed_ids)
     df_final = get_playerMoney(df_final)
     df_final = get_gamephase(df_final)
