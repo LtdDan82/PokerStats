@@ -93,7 +93,10 @@ cashgame_stats = cashgame_stats.loc[player_vs_opp, :]
 cashstats_styled = (cashgame_stats.style
               .apply(highlight_max)
               .apply(highlight_min)
-              .format("{:.1f}"))
+              .format("{:.2f}")
+              .set_properties(**{'text-align': 'center'})
+              .set_table_styles([dict(selector='th', props=[('text-align', 'center')])])
+              )
 
 
 st.dataframe(cashstats_styled)
@@ -104,15 +107,14 @@ st.dataframe(cashstats_styled)
 st.write("""### Global Game Stats""") # Game Statistics
 game_col1, game_col2 = st.beta_columns([2, 1]) # Generate 2 columns
 
-#game_col1.table(general_gStats.style.format("{:.1f}"))
-# styled_df = (general_gStats.style
-#              .background_gradient(cmap="Greys", axis = 0)
-#              .format("{:.1f}"))
 gStats_styled = (general_gStats.style
               .apply(highlight_max)
               .apply(highlight_min)
-              .format("{:.0f}"))
-game_col1.dataframe(gStats_styled, width = 1000, height = 1000)
+              .format("{:.0f}")
+              .set_properties(**{'text-align': 'center'})
+              .set_table_styles([dict(selector='th', props=[('text-align', 'center')])]))
+
+game_col1.dataframe(gStats_styled)
                 
 
 game_col1.pyplot(fig_play_stats)

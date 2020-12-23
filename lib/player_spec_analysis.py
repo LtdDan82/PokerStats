@@ -466,6 +466,13 @@ class PlayerStats(object):
                                   columns = player_action_count.index.get_level_values('action') )
         
         df_pivot.columns = df_pivot.columns.to_flat_index()
+        colnames = df_pivot.columns.tolist()
+        colnames = [x[1] for x in colnames]
+        colnames = [x + ' [per_game]' for x in colnames]
+        
+        df_pivot.columns = colnames
+        
+        df_pivot = df_pivot
         
         return df_pivot
         
@@ -479,7 +486,7 @@ class PlayerStats(object):
         #raise first in rate
         rfi = self.get_rfi_rate()
         
-        count_stats = self.get_player_action()
+        count_stats = self.get_player_action().divide(self.get_played_games(), axis = 0)
         
         return pd.concat([vpip, pfr, rfi, count_stats], axis = 1)
         
