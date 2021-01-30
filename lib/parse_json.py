@@ -10,9 +10,11 @@ import json
 import numpy as np
 import pandas as pd
 import os
-#import openpyxl
-#%%
+# import openpyxl
+# %%
+
 def add_game_state(df, event_map):
+
 
     game_state = []
     for elem in df['type']:
@@ -20,14 +22,18 @@ def add_game_state(df, event_map):
     
     df['action'] = game_state
     return df
-#%%
+# %%
 def get_gametype(df, event_map):
+
+
     action = df[df['type'] == event_map[event_map["action"] == "ROUND_STARTED"].index.tolist()[0]]['params'].values[0][0]
     df['game'] = action
     
     return df
-#%%
+# %%
 def fill_list(listitem, maxlen):
+
+
     '''
 
     Parameters
@@ -56,16 +62,20 @@ def fill_list(listitem, maxlen):
         listitem = listitem + make_add
         
     return listitem
-#%%
+# %%
 def parse_events():
+
+
     directory = os.getcwd()
     
     events = os.path.join(directory, "data", "events_map.xlsx")
     #events = 'https://github.com/LtdDan82/PokerStats/blob/master/data/events_map.xlsx'
     event_df = pd.read_excel(events, index_col = 0, header = None, names = ['action'], engine = 'openpyxl')
     return event_df
-#%%
+# %%
 def parse_data(datestring):
+
+
     '''
     datestring in the form: "ddmmyyyy"
     
@@ -80,21 +90,15 @@ def parse_data(datestring):
 
     '''
     assert type(datestring) == str
-    
-    
     directory = os.getcwd()
-    
     session_dir = "session_" + datestring 
     history_file = "history_" + datestring + ".txt"
     publicId_file = "publicID_" + datestring + ".txt"
-    
-    
     json_data = os.path.join(directory, "data", session_dir, history_file)
     #json_data = "https://github.com/LtdDan82/PokerStats/blob/master/data/history_12122020.txt"
     pub_ids = os.path.join(directory, "data", session_dir, publicId_file)
     #pub_ids = "./data/public_id.txt"
-    #pub_ids = "https://github.com/LtdDan82/PokerStats/blob/master/data/public_id.txt"
-    
+    #pub_ids = "https://github.com/LtdDan82/PokerStats/blob/master/data/public_id.txt" 
     event_map = parse_events()
     with open(json_data, 'r') as f1, open(pub_ids, 'r') as f2:
         parsed_history = json.load(f1)
@@ -124,7 +128,9 @@ def parse_data(datestring):
         df_final.loc[:, 'param_' + str(k)] = df_final.params.map(lambda x: x[k])
     
     return df_final, parsed_ids
-#%%
+
+
+df_final, parsed_ids = parse_data('12122020')
     
 
 
