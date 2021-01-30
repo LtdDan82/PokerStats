@@ -19,9 +19,9 @@ plt.rcParams['ytick.labelsize'] = 10
 plt.rcParams['legend.fontsize'] = 12
 plt.rcParams['figure.titlesize'] = 14
 
-#%%
-datestring = '12122020'
-df_final = extract_transform(datestring)
+# %%
+# datestring = '12122020'
+# df_final = extract_transform(datestring)
 
 
 
